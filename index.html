@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3D FEM Viewer</title>
+  <title>Calcul Scientifique — Projet EDP 2D - Marc I. Romain B.</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -417,9 +417,118 @@
     .copy-btn:hover { background: #141e2a; color: #60a0c0; }
     .copy-btn.copied { color: #60d090; border-color: #2a5840; }
 
+
+    /* ── Description section ───────────────────────────────────────────── */
+    #description {
+      width: min(96vw, 1100px);
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    .desc-card {
+      background: #10131f;
+      border: 1px solid #1c2436;
+      border-radius: 12px;
+      padding: 32px 40px 36px;
+      color: #8898aa;
+      font-size: 0.93rem;
+      line-height: 1.85;
+    }
+    .desc-card h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #3a7fbf;
+      margin-bottom: 22px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #1c2a3a;
+    }
+    .desc-card h3 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #3a6888;
+      margin: 26px 0 12px;
+    }
+    .desc-card p {
+      margin-bottom: 14px;
+      color: #7a90a8;
+    }
+    .desc-card .math-block {
+      margin: 18px 0 18px 20px;
+      padding: 14px 20px;
+      background: #0c0f1a;
+      border-left: 3px solid #1e3a56;
+      border-radius: 0 6px 6px 0;
+      overflow-x: auto;
+    }
+    .desc-card .math-block::-webkit-scrollbar { height: 4px; }
+    .desc-card .math-block::-webkit-scrollbar-thumb { background: #1a2a3a; }
+    .desc-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 6px;
+    }
+    @media (max-width: 750px) {
+      .desc-two-col { grid-template-columns: 1fr; }
+      .desc-card { padding: 22px 18px 26px; }
+    }
+    .desc-tag {
+      display: inline-block;
+      background: #0c1a2c;
+      border: 1px solid #1a3048;
+      border-radius: 4px;
+      padding: 2px 9px;
+      font-size: 0.72rem;
+      color: #4a80a8;
+      font-family: 'Consolas', monospace;
+      margin: 2px 3px;
+    }
+    .desc-highlight {
+      color: #a0c8e0;
+      font-weight: 500;
+    }
+    .desc-divider {
+      height: 1px;
+      background: #1c2436;
+      margin: 28px 0;
+    }
+    .desc-fem-step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .desc-fem-step-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #0e1e30;
+      border: 1px solid #1e3a52;
+      color: #3a80b8;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .desc-fem-step-text {
+      flex: 1;
+      color: #7a90a8;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
   </style>
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.getElementById('description'),{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]})"></script>
 </head>
 <body>
 
@@ -428,7 +537,7 @@
     <span>Loading WebAssembly&hellip;</span>
   </div>
 
-  <h1>3D FEM Viewer</h1>
+  <h1>Calcul Scientifique &mdash; Projet EDP 2D &mdash; (Marc I. Romain B.)</h1>
 
   <div id="scene-row">
 
@@ -441,10 +550,10 @@
     <div id="controls">
 
       <!-- Subdivision -->
-      <div class="ctrl-title">Subdivision</div>
+      <div class="ctrl-title">Maillage (Triangulation)</div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Rectangle bounds</div>
+        <div class="ctrl-section-label">Domaine d'étude</div>
         <div class="ctrl-row">
           <label>a</label>
           <input type="number" id="inp-a" min="0" max="5" step="0.25" value="2">
@@ -460,42 +569,42 @@
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Divisions</div>
+        <div class="ctrl-section-label">Nombre d'intervalles</div>
         <div class="ctrl-row">
           <label>N</label>
           <input type="number" id="inp-n" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">cols (X)</span>
+          <span class="ctrl-hint">Abscisses (X)</span>
         </div>
         <div class="ctrl-row">
           <label>M</label>
           <input type="number" id="inp-m" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">rows (Y)</span>
+          <span class="ctrl-hint">Ordonnées (Y)</span>
         </div>
       </div>
 
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Barycentric surface</div>
+        <div class="ctrl-section-label">Surface</div>
         <div class="ctrl-row">
           <label>h</label>
           <input type="number" id="inp-h" min="0" max="5" step="0.1" value="0">
-          <span class="ctrl-hint">pyramid height</span>
+          <span class="ctrl-hint">hauteur des fonctions barycentriques</span>
         </div>
         <div style="font-size:0.60rem;color:#2a4858;line-height:1.4">
-          h=0 &rarr; flat fill &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; pyramids
+          h=0 &rarr; triangles &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; fonctions barycentriques
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-apply">Apply</button>
-        <button id="btn-clear">Clear</button>
+        <button id="btn-apply">Afficher Maillage</button>
+        <button id="btn-clear">Réinitialiser</button>
       </div>
-      <div id="ctrl-info">Enter values and press Apply.</div>
+      <div id="ctrl-info">Choisir les valeurs et cliquer sur "Afficher Maillage"</div>
 
       <!-- PDE Solver -->
       <div class="ctrl-divider"></div>
-      <div class="pde-section-title">PDE Solver</div>
+      <div class="pde-section-title">Calcul EDP</div>
 
       <div class="ctrl-section">
         <div class="ctrl-section-label">&minus;div(&eta;&nabla;u) + &lambda;u = f</div>
@@ -509,35 +618,35 @@
         <div class="ctrl-row">
           <label>&eta;</label>
           <input type="text" id="inp-eta" value="1" placeholder="e.g. 1+x*x">
-          <span class="ctrl-hint">&eta;(x,y)</span>
+          <span class="ctrl-hint">&eta;(x,y) (diffusion)</span>
         </div>
 
         <div class="ctrl-row">
           <label>&lambda;</label>
           <input type="number" id="inp-lambda" min="0" step="0.1" value="1">
-          <span class="ctrl-hint">reaction</span>
+          <span class="ctrl-hint">(reaction)</span>
         </div>
 
-        <div class="ctrl-section-label" style="margin-top:2px">Boundary conditions</div>
+        <div class="ctrl-section-label" style="margin-top:2px">Conditions aux bords</div>
         <div class="bc-row">
           <div class="bc-btn active" id="bc-dirichlet" onclick="selectBC('dirichlet')">Dirichlet (u=0)</div>
           <div class="bc-btn"       id="bc-neumann"   onclick="selectBC('neumann')"  >Neumann (&part;&#x2099;u=0)</div>
         </div>
 
         <div class="expr-note">
-          Write: <b>pi</b>, <b>sqrt(x)</b>, <b>log(y)</b>, <b>exp(x)</b>,<br>
+          Exemples d'entrées : <b>pi</b>, <b>sqrt(x)</b>, <b>log(y)</b>, <b>exp(x)</b>,<br>
           <b>sin(x)</b>, <b>cos(x)</b>, <b>abs(x)</b>, <b>pow(x,2)</b>&hellip;<br>
           Or full JS: <b>Math.sin(x)*Math.exp(-y*y)</b><br>
-          Shares a, b, N, M from Subdivision above.
+          Les réels a, b, N, M définis comme ci-dessus
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-solve">Solve PDE</button>
-        <button id="btn-clearpde">Clear</button>
+        <button id="btn-solve">Calcul EDP</button>
+        <button id="btn-clearpde">Réinitialiser</button>
       </div>
 
-      <div id="pde-status">Set f, &eta;, &lambda; and press Solve.</div>
+      <div id="pde-status">Définir f, &eta;, &lambda; et cliquer sur "Calcul EDP"</div>
 
       <div style="margin-top:2px">
         <div class="colorbar"></div>
@@ -545,10 +654,189 @@
       </div>
 
       <div class="ctrl-divider"></div>
-      <button id="btn-viewcode" onclick="openCodeModal()">&#128196; View C++ Solver Code</button>
+      <button id="btn-viewcode" onclick="openCodeModal()">&#128196; Voir code source C++/Web Assembly</button>
     </div><!-- #controls -->
 
   </div><!-- #scene-row -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- Description section                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="description">
+    <div class="desc-card">
+
+      <!-- ── Titre ─────────────────────────────────────────────────────── -->
+      <h2>📐 Présentation du problème</h2>
+
+      <!-- ── Domaine ───────────────────────────────────────────────────── -->
+      <h3>Domaine de calcul</h3>
+      <p>
+        Soit <span class="desc-highlight">\(\Omega = {]{-a},{a}[} \times {]{-b},{b}[}\)</span>
+        un rectangle ouvert de \(\mathbb{R}^2\), où \(a > 0\) et \(b > 0\) sont des paramètres
+        donnés par l'utilisateur. Son bord est défini par :
+      </p>
+      <div class="math-block">
+        \[
+          \partial\Omega = \overline{\Omega} \setminus \Omega
+          = \bigl\{(x,y) \in [-a,a]\times[-b,b] \;\big|\; |x|=a \text{ ou } |y|=b\bigr\}.
+        \]
+      </div>
+
+      <!-- ── EDP ───────────────────────────────────────────────────────── -->
+      <h3>Équation aux dérivées partielles</h3>
+      <p>
+        On cherche <span class="desc-highlight">\(u : \Omega \to \mathbb{R}\)</span> solution de :
+      </p>
+      <div class="math-block">
+        \[
+          \text{(1)}\quad
+          -\frac{\partial}{\partial x}\!\left(\eta\,\frac{\partial u}{\partial x}\right)
+          -\frac{\partial}{\partial y}\!\left(\eta\,\frac{\partial u}{\partial y}\right)
+          + \lambda\, u(x,y) = f(x,y)
+          \qquad \text{pour } (x,y)\in\Omega,
+        \]
+      </div>
+      <p>
+        où <span class="desc-highlight">\(\lambda > 0\)</span> est une constante réelle strictement positive,
+        et \(\eta, f : \Omega \to \mathbb{R}\) sont deux fonctions continues.
+        On suppose de plus que \(\eta\) est de classe \(\mathcal{C}^1\) sur \(\Omega\) et vérifie :
+      </p>
+      <div class="math-block">
+        \[
+          \exists\,\eta_0 > 0 \text{ telle que }
+          \forall (x,y)\in\Omega,\quad \eta(x,y) \geq \eta_0.
+        \]
+      </div>
+
+      <!-- ── Conditions aux limites ─────────────────────────────────────── -->
+      <h3>Conditions aux limites</h3>
+      <div class="desc-two-col">
+        <div>
+          <p style="margin-bottom:8px">
+            <span class="desc-highlight">Neumann homogène</span> (flux nul aux bords) :
+          </p>
+          <div class="math-block">
+            \[
+              \frac{\partial u}{\partial x}(\pm a, y) = 0,\quad {-b \leq y \leq b}
+            \]
+            \[
+              \frac{\partial u}{\partial y}(x, \pm b) = 0,\quad {-a \leq x \leq a}
+            \]
+          </div>
+        </div>
+        <div>
+          <p style="margin-bottom:8px">
+            <span class="desc-highlight">Dirichlet homogène</span> (valeur imposée) :
+          </p>
+          <div class="math-block">
+            \[
+              u(x,y) = 0 \qquad \text{pour } (x,y)\in\partial\Omega
+            \]
+          </div>
+          <p style="font-size:0.80rem;color:#3a5868;margin-top:10px">
+            Le choix se fait via le panneau de contrôle.
+          </p>
+        </div>
+      </div>
+
+      <div class="desc-divider"></div>
+
+      <!-- ── MEF ───────────────────────────────────────────────────────── -->
+      <h2>🔢 Méthode des Éléments Finis (MEF)</h2>
+      <p>
+        La <span class="desc-highlight">méthode des éléments finis</span> permet d'approcher
+        la solution \(u\) de ce problème continu par une fonction discrète \(u_h\), calculable
+        numériquement. Voici les grandes étapes :
+      </p>
+
+      <!-- Étape 1 -->
+      <div class="desc-fem-step">
+        <div class="desc-fem-step-num">1</div>
+        <div class="desc-fem-step-text">
+          <strong style="color:#5a90b8">Triangulation du domaine.</strong>
+          On découpe \(\Omega\) en \(N \times M\) rectangles puis chaque rectangle est
+          subdivisé en deux triangles, formant un maillage de
+          <span class="desc-highlight">\(2NM\)</span> triangles et
+          <span class="desc-highlight">\((N+1)(M+1)\)</span> nœuds.
+          Les nœuds sont aux positions
+          \(\bigl(x_i, y_j\bigr) = \bigl(-a + i\,\tfrac{2a}{N},\; -b + j\,\tfrac{2b}{M}\bigr)\).
+        </div>
+      </div>
+
+      <!-- Étape 2 -->
+      <div class="desc-fem-step">
+        <div class="desc-fem-step-num">2</div>
+        <div class="desc-fem-step-text">
+          <strong style="color:#5a90b8">Fonctions de base barycentriques.</strong>
+          Sur chaque triangle \(T\) de sommets \(P_0, P_1, P_2\), on définit trois fonctions
+          <span class="desc-highlight">\(\varphi_0, \varphi_1, \varphi_2\)</span> (fonctions
+          chapeaux) affines par morceaux telles que
+          \(\varphi_k(P_j) = \delta_{kj}\).
+          Elles forment une base de l'espace d'approximation
+          \(V_h \subset H^1(\Omega)\) :
+          \[
+            u_h(x,y) = \sum_{k=1}^{(N+1)(M+1)} X_k\,\varphi_k(x,y).
+          \]
+          Les pyramides colorées dans la visualisation 3D représentent ces fonctions : chaque
+          couleur correspond à l'un des trois sommets du triangle.
+        </div>
+      </div>
+
+      <!-- Étape 3 -->
+      <div class="desc-fem-step">
+        <div class="desc-fem-step-num">3</div>
+        <div class="desc-fem-step-text">
+          <strong style="color:#5a90b8">Formulation variationnelle.</strong>
+          On multiplie l'EDP par une fonction test \(v \in V_h\) et on intègre par parties sur
+          \(\Omega\). On obtient le problème discret : trouver \(u_h \in V_h\) tel que
+          \[
+            a(u_h, v_h) = \ell(v_h)
+            \quad \forall v_h \in V_h,
+          \]
+          avec la forme bilinéaire
+          \[
+            a(u,v) = \int_\Omega \eta\,\nabla u \cdot \nabla v\; \mathrm{d}x\,\mathrm{d}y
+            + \lambda \int_\Omega u\,v\;\mathrm{d}x\,\mathrm{d}y.
+          \]
+        </div>
+      </div>
+
+      <!-- Étape 4 -->
+      <div class="desc-fem-step">
+        <div class="desc-fem-step-num">4</div>
+        <div class="desc-fem-step-text">
+          <strong style="color:#5a90b8">Assemblage de la matrice de rigidité.</strong>
+          En substituant \(u_h = \sum_k X_k \varphi_k\) et \(v_h = \varphi_i\), on obtient
+          le système linéaire
+          \(\mathbf{A}\,\mathbf{X} = \mathbf{b}\),
+          où
+          \[
+            A_{ij} = a(\varphi_j, \varphi_i), \qquad b_i = \int_\Omega f\,\varphi_i\;\mathrm{d}x\,\mathrm{d}y.
+          \]
+          La matrice \(\mathbf{A}\) est creuse, symétrique et définie positive.
+          L'intégration sur chaque triangle est réalisée par une
+          <span class="desc-highlight">quadrature au point milieu</span>.
+        </div>
+      </div>
+
+      <!-- Étape 5 -->
+      <div class="desc-fem-step">
+        <div class="desc-fem-step-num">5</div>
+        <div class="desc-fem-step-text">
+          <strong style="color:#5a90b8">Résolution par BiCGSTAB.</strong>
+          Le système \(\mathbf{A}\,\mathbf{X} = \mathbf{b}\) est résolu par la méthode itérative
+          <span class="desc-highlight">BiCGSTAB</span> (Biconjugate Gradient Stabilized),
+          adaptée aux matrices creuses non symétriques. La solution
+          \(\mathbf{X} \in \mathbb{R}^{(N+1)(M+1)}\)
+          donne les valeurs nodales \(u_h\) aux nœuds du maillage.
+          La surface colorée dans la visualisation représente cette solution avec
+          une carte de couleurs <em>bleu → cyan → vert → jaune → rouge</em>.
+        </div>
+      </div>
+
+    </div><!-- .desc-card -->
+  </div><!-- #description -->
 
   <p id="hint">
     <span class="key">Drag</span>&nbsp;Orbit
