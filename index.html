@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calcul Scientifique — Projet EDP 2D</title>
+  <title>Calcul Scientifique — Projet EDP 2D - Marc I. Romain B.</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -450,7 +450,7 @@
     <span>Loading WebAssembly&hellip;</span>
   </div>
 
-  <h1>Calcul Scientifique &mdash; Projet EDP 2D</h1>
+  <h1>Calcul Scientifique &mdash; Projet EDP 2D &mdash; Marc I. Romain.B</h1>
 
   <div id="scene-row">
 
@@ -463,10 +463,10 @@
     <div id="controls">
 
       <!-- Subdivision -->
-      <div class="ctrl-title">Subdivision</div>
+      <div class="ctrl-title">Maillage</div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Rectangle bounds</div>
+        <div class="ctrl-section-label">Intervalles</div>
         <div class="ctrl-row">
           <label>a</label>
           <input type="number" id="inp-a" min="0" max="5" step="0.25" value="2">
@@ -482,42 +482,42 @@
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Divisions</div>
+        <div class="ctrl-section-label">Subdivision</div>
         <div class="ctrl-row">
           <label>N</label>
           <input type="number" id="inp-n" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">cols (X)</span>
+          <span class="ctrl-hint">abscisses (X)</span>
         </div>
         <div class="ctrl-row">
           <label>M</label>
           <input type="number" id="inp-m" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">rows (Y)</span>
+          <span class="ctrl-hint">ordonnées (Y)</span>
         </div>
       </div>
 
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Barycentric surface</div>
+        <div class="ctrl-section-label">Fonctions Barycentriques</div>
         <div class="ctrl-row">
           <label>h</label>
           <input type="number" id="inp-h" min="0" max="5" step="0.1" value="0">
-          <span class="ctrl-hint">pyramid height</span>
+          <span class="ctrl-hint">hauteur</span>
         </div>
         <div style="font-size:0.60rem;color:#2a4858;line-height:1.4">
-          h=0 &rarr; flat fill &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; pyramids
+          h=0 &rarr; maillage simple &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; affichage des fonctions barycentriques
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-apply">Apply</button>
-        <button id="btn-clear">Clear</button>
+        <button id="btn-apply">Afficher Maillage</button>
+        <button id="btn-clear">Réinitialiser</button>
       </div>
-      <div id="ctrl-info">Enter values and press Apply.</div>
+      <div id="ctrl-info">Entrer les valeurs et appuyer sur "Afficher".</div>
 
       <!-- PDE Solver -->
       <div class="ctrl-divider"></div>
-      <div class="pde-section-title">PDE Solver</div>
+      <div class="pde-section-title">Calcul EDP</div>
 
       <div class="ctrl-section">
         <div class="ctrl-section-label">&minus;div(&eta;&nabla;u) + &lambda;u = f</div>
@@ -531,7 +531,7 @@
         <div class="ctrl-row">
           <label>&eta;</label>
           <input type="text" id="inp-eta" value="1" placeholder="e.g. 1+x*x">
-          <span class="ctrl-hint">&eta;(x,y)</span>
+          <span class="ctrl-hint">&eta;(x,y), diffusion</span>
         </div>
 
         <div class="ctrl-row">
@@ -540,7 +540,7 @@
           <span class="ctrl-hint">reaction</span>
         </div>
 
-        <div class="ctrl-section-label" style="margin-top:2px">Boundary conditions</div>
+        <div class="ctrl-section-label" style="margin-top:2px">Conditions aux bords</div>
         <div class="bc-row">
           <div class="bc-btn active" id="bc-dirichlet" onclick="selectBC('dirichlet')">Dirichlet (u=0)</div>
           <div class="bc-btn"       id="bc-neumann"   onclick="selectBC('neumann')"  >Neumann (&part;&#x2099;u=0)</div>
@@ -549,17 +549,17 @@
         <div class="expr-note">
           Write: <b>pi</b>, <b>sqrt(x)</b>, <b>log(y)</b>, <b>exp(x)</b>,<br>
           <b>sin(x)</b>, <b>cos(x)</b>, <b>abs(x)</b>, <b>pow(x,2)</b>&hellip;<br>
-          Or full JS: <b>Math.sin(x)*Math.exp(-y*y)</b><br>
-          Shares a, b, N, M from Subdivision above.
+          Ou directement JS: <b>Math.sin(x)*Math.exp(-y*y)</b><br>
+          On garde les valeurs a, b, N, M définies au dessus.
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-solve">Solve PDE</button>
-        <button id="btn-clearpde">Clear</button>
+        <button id="btn-solve">Calcul EDP</button>
+        <button id="btn-clearpde">Réinitialiser</button>
       </div>
 
-      <div id="pde-status">Set f, &eta;, &lambda; and press Solve.</div>
+      <div id="pde-status">Définir f, &eta;, &lambda; et appuyer sur "Calcul EDP" .</div>
 
       <div style="margin-top:2px">
         <div class="colorbar"></div>
