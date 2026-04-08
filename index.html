@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calcul Scientifique — Projet EDP 2D</title>
+  <title>Calcul Scientifique — Projet EDP 2D - Marc I. Romain B.</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -282,54 +282,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-
-  
-    /* ── Code modal tab groups ─────────────────────────────────────── */
-    .tab-group-label {
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2a4868;
-      padding: 3px 2px;
-      align-self: center;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .tab-group-sep {
-      width: 1px;
-      height: 18px;
-      background: #1c2840;
-      align-self: center;
-      flex-shrink: 0;
-      margin: 0 3px;
-    }
-    .code-tab-bridge {
-      color: #3a7860 !important;
-      border-color: #1c3830 !important;
-    }
-    .code-tab-bridge:hover { color: #60c090 !important; }
-    .code-tab-bridge.active { background: #0e2820; color: #80e0b0 !important; border-color: #2a6850 !important; }
-
-    /* ── Copy button ────────────────────────────────────────────────── */
-    .copy-btn {
-      position: sticky;
-      float: right;
-      top: 8px;
-      right: 14px;
-      padding: 3px 10px;
-      border-radius: 4px;
-      border: 1px solid #1c3040;
-      background: #10181e;
-      color: #3a6888;
-      font-size: 0.68rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      z-index: 2;
-    }
-    .copy-btn:hover { background: #141e2a; color: #60a0c0; }
-    .copy-btn.copied { color: #60d090; border-color: #2a5840; }
-
-
     /* ── Description section ───────────────────────────────────────────── */
     #description {
       width: min(96vw, 1100px);
@@ -434,9 +386,7 @@
       font-size: 0.88rem;
       line-height: 1.7;
     }
-
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -450,7 +400,7 @@
     <span>Loading WebAssembly&hellip;</span>
   </div>
 
-  <h1>Calcul Scientifique &mdash; Projet EDP 2D</h1>
+  <h1>Calcul Scientifique &mdash; Projet EDP 2D &mdash; Marc I. Romain.B</h1>
 
   <div id="scene-row">
 
@@ -463,10 +413,10 @@
     <div id="controls">
 
       <!-- Subdivision -->
-      <div class="ctrl-title">Subdivision</div>
+      <div class="ctrl-title">Maillage</div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Rectangle bounds</div>
+        <div class="ctrl-section-label">Intervalles</div>
         <div class="ctrl-row">
           <label>a</label>
           <input type="number" id="inp-a" min="0" max="5" step="0.25" value="2">
@@ -482,42 +432,42 @@
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Divisions</div>
+        <div class="ctrl-section-label">Subdivision</div>
         <div class="ctrl-row">
           <label>N</label>
           <input type="number" id="inp-n" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">cols (X)</span>
+          <span class="ctrl-hint">abscisses (X)</span>
         </div>
         <div class="ctrl-row">
           <label>M</label>
           <input type="number" id="inp-m" min="1" max="10000" step="1" value="6">
-          <span class="ctrl-hint">rows (Y)</span>
+          <span class="ctrl-hint">ordonnées (Y)</span>
         </div>
       </div>
 
       <div class="ctrl-divider"></div>
 
       <div class="ctrl-section">
-        <div class="ctrl-section-label">Barycentric surface</div>
+        <div class="ctrl-section-label">Fonctions Barycentriques</div>
         <div class="ctrl-row">
           <label>h</label>
           <input type="number" id="inp-h" min="0" max="5" step="0.1" value="0">
-          <span class="ctrl-hint">pyramid height</span>
+          <span class="ctrl-hint">hauteur</span>
         </div>
         <div style="font-size:0.60rem;color:#2a4858;line-height:1.4">
-          h=0 &rarr; flat fill &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; pyramids
+          h=0 &rarr; maillage simple &nbsp;&middot;&nbsp; h&gt;0 &rarr; &phi;&#8320;&phi;&#8321;&phi;&#8322; affichage des fonctions barycentriques
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-apply">Apply</button>
-        <button id="btn-clear">Clear</button>
+        <button id="btn-apply">Afficher Maillage</button>
+        <button id="btn-clear">Réinitialiser</button>
       </div>
-      <div id="ctrl-info">Enter values and press Apply.</div>
+      <div id="ctrl-info">Entrer les valeurs et appuyer sur "Afficher".</div>
 
       <!-- PDE Solver -->
       <div class="ctrl-divider"></div>
-      <div class="pde-section-title">PDE Solver</div>
+      <div class="pde-section-title">Calcul EDP</div>
 
       <div class="ctrl-section">
         <div class="ctrl-section-label">&minus;div(&eta;&nabla;u) + &lambda;u = f</div>
@@ -531,7 +481,7 @@
         <div class="ctrl-row">
           <label>&eta;</label>
           <input type="text" id="inp-eta" value="1" placeholder="e.g. 1+x*x">
-          <span class="ctrl-hint">&eta;(x,y)</span>
+          <span class="ctrl-hint">&eta;(x,y), diffusion</span>
         </div>
 
         <div class="ctrl-row">
@@ -540,7 +490,7 @@
           <span class="ctrl-hint">reaction</span>
         </div>
 
-        <div class="ctrl-section-label" style="margin-top:2px">Boundary conditions</div>
+        <div class="ctrl-section-label" style="margin-top:2px">Conditions aux bords</div>
         <div class="bc-row">
           <div class="bc-btn active" id="bc-dirichlet" onclick="selectBC('dirichlet')">Dirichlet (u=0)</div>
           <div class="bc-btn"       id="bc-neumann"   onclick="selectBC('neumann')"  >Neumann (&part;&#x2099;u=0)</div>
@@ -549,17 +499,17 @@
         <div class="expr-note">
           Write: <b>pi</b>, <b>sqrt(x)</b>, <b>log(y)</b>, <b>exp(x)</b>,<br>
           <b>sin(x)</b>, <b>cos(x)</b>, <b>abs(x)</b>, <b>pow(x,2)</b>&hellip;<br>
-          Or full JS: <b>Math.sin(x)*Math.exp(-y*y)</b><br>
-          Shares a, b, N, M from Subdivision above.
+          Ou directement JS: <b>Math.sin(x)*Math.exp(-y*y)</b><br>
+          On garde les valeurs a, b, N, M définies au dessus.
         </div>
       </div>
 
       <div class="ctrl-buttons">
-        <button id="btn-solve">Solve PDE</button>
-        <button id="btn-clearpde">Clear</button>
+        <button id="btn-solve">Calcul EDP</button>
+        <button id="btn-clearpde">Réinitialiser</button>
       </div>
 
-      <div id="pde-status">Set f, &eta;, &lambda; and press Solve.</div>
+      <div id="pde-status">Définir f, &eta;, &lambda; et appuyer sur "Calcul EDP" .</div>
 
       <div style="margin-top:2px">
         <div class="colorbar"></div>
@@ -764,22 +714,6 @@
       document.getElementById('bc-neumann').classList.toggle('active', mode === 'neumann');
     }
 
-
-    function showCodeTab(btn, id) {
-      document.querySelectorAll('.code-tab').forEach(function(b){ b.classList.remove('active'); });
-      document.querySelectorAll('.code-panel').forEach(function(p){ p.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById(id).classList.add('active');
-    }
-    document.addEventListener('keydown', function(e){
-    });
-    // Init highlight.js on all code blocks once DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.code-panel code').forEach(function(el){
-        hljs.highlightElement(el);
-      });
-    });
-
     var Module = {
       canvas: document.getElementById('canvas'),
       onRuntimeInitialized: function () {
@@ -936,36 +870,8 @@
         });
       }
     };
-  
-    function copyTab(tabId, btn) {
-      var code = document.querySelector('#' + tabId + ' code');
-      if (!code) return;
-      navigator.clipboard.writeText(code.innerText).then(function() {
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(function() {
-          btn.textContent = 'Copy';
-          btn.classList.remove('copied');
-        }, 1800);
-      }).catch(function() {
-        // Fallback for non-HTTPS
-        var sel = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(code);
-        sel.removeAllRanges();
-        sel.addRange(range);
-        document.execCommand('copy');
-        sel.removeAllRanges();
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
-      });
-    }
-</script>
+  </script>
 
-    </div>
-  </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="app.js"></script>
+  <script src="viewer.js"></script>
 </body>
 </html>
